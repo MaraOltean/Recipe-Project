@@ -17,6 +17,10 @@ public class ConnectDataBase {
         }
         displayDatabase(connection, "user");
        // insertData(connection, "user", (new User(5, "Mara", "Oltean", Gender.F, 24, 1.64, 53, 1.5)) );
+        deleteData(connection, "user", 2 );
+        System.out.println("After delete");
+        displayDatabase(connection, "user");
+
 
         if (connection!=null){
             connection.close();
@@ -53,6 +57,18 @@ public class ConnectDataBase {
 
         preparedStatement.executeUpdate();
 
+
+    }
+    private static void deleteData(Connection connection, String tableName, Integer ID) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM " + tableName + " WHERE id = ?");
+        preparedStatement.setLong(1, ID);
+
+        int rowsAffected = preparedStatement.executeUpdate();
+        if(rowsAffected>0){
+            System.out.println("User with id = " + ID + " deleted with successfully");
+        }else{
+            System.out.println("The user has not been deleted");
+        }
 
     }
 }
