@@ -10,8 +10,9 @@ public class User {
     private double height;
     private double weight;
     private double activityFactor;
+    private String diseaseName;
 
-    public User (long ID, String firstName, String lastName, Gender gender, int age, double height, double weight, double activityFactor) {
+    public User (long ID, String firstName, String lastName, Gender gender, int age, double height, double weight, double activityFactor,String diseaseName) {
         this.ID = ID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -20,6 +21,7 @@ public class User {
         this.height = height;
         this.weight = weight;
         this.activityFactor = activityFactor;
+        this.diseaseName = diseaseName;
     }
 
     public User(){
@@ -88,6 +90,26 @@ public class User {
     public void setActivityFactor(double activityFactor) {
         this.activityFactor = activityFactor;
     }
+    public String getDiseaseName() {
+        return diseaseName;
+    }
 
+    public void setDiseaseName(String diseaseName) {
+        this.diseaseName = diseaseName;
+    }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "ID=" + ID +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", gender=" + gender +
+                ", age=" + age +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", activityFactor=" + activityFactor +
+                ", diseaseName='" + diseaseName + '\'' +
+                '}';
+    }
 }
