@@ -9,7 +9,7 @@ public class ConnectDataBase {
         try{
             String url = "jdbc:sqlite:C:/sqlite/ReceipeDataBase/recipe.db";
             connection = DriverManager.getConnection(url);
-            System.out.println("Connection to SQLite successfully");
+            System.out.println("Connection to SQLite successfully :)");
         }
         catch (SQLException e){
 
