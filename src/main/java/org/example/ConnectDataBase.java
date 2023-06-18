@@ -2,6 +2,9 @@ package org.example;
 
 import java.sql.*;
 
+import static java.awt.SystemColor.menu;
+import static org.example.Main.menu;
+
 public class ConnectDataBase {
     public static void connect() throws SQLException {
         Connection connection = null;
@@ -20,6 +23,7 @@ public class ConnectDataBase {
         deleteData(connection, "user", 2 );
         System.out.println("After delete");
         displayDatabase(connection, "user");
+        menu(connection);
 
 
         if (connection!=null){
@@ -27,7 +31,7 @@ public class ConnectDataBase {
         }
 
 }
-    private static void displayDatabase(Connection conn, String tableName) throws SQLException {
+    public static void displayDatabase(Connection conn, String tableName) throws SQLException {
         String selectSQL = "SELECT * FROM " + tableName;
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(selectSQL);
@@ -43,8 +47,8 @@ public class ConnectDataBase {
             System.out.println("Activity factor: " + rs.getDouble("activityFactor"));
         }
     }
-    private static void insertData(Connection connection, String tableName, User user) throws SQLException{
-        String insertSQL = "INSERT INTO " + tableName + "(id,firstName,lastName,height,weight,gender,age,activityFactor) " + "VALUES(?,?,?,?,?,?,?,?)";
+    public static void insertData(Connection connection, String tableName, User user) throws SQLException{
+        String insertSQL = "INSERT INTO " + tableName + "(id,firstName,lastName,height,weight,gender,age,activityFactor,diseaseName,mealPlanIDs) " + "VALUES(?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
         preparedStatement.setLong(1, user.getID());
         preparedStatement.setString(2, user.getFirstName());
@@ -54,12 +58,25 @@ public class ConnectDataBase {
         preparedStatement.setString(6, user.getGender().name());
         preparedStatement.setInt(7, user.getAge());
         preparedStatement.setDouble(8, user.getActivityFactor());
+        preparedStatement.setString(9, user.getDiseaseName());
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < user.getMealPlanIDs().size(); i++) {
+            sb.append(user.getMealPlanIDs().get(i));
+            if (i < user.getMealPlanIDs().size() - 1) {
+                sb.append(",");
+            }
+        }
+        String concatenatedValues = sb.toString();
+
+        // Setează șirul de caractere în câmpul corespunzător
+        preparedStatement.setString(10, concatenatedValues);
+
 
         preparedStatement.executeUpdate();
 
 
     }
-    private static void deleteData(Connection connection, String tableName, Integer ID) throws SQLException {
+    public static void deleteData(Connection connection, String tableName, Integer ID) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM " + tableName + " WHERE id = ?");
         preparedStatement.setLong(1, ID);
 

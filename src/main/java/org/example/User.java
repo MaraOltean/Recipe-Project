@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.List;
+
 public class User {
 
     private long ID;
@@ -12,7 +14,9 @@ public class User {
     private double activityFactor;
     private String diseaseName;
 
-    public User (long ID, String firstName, String lastName, Gender gender, int age, double height, double weight, double activityFactor,String diseaseName) {
+    private List<Integer> mealPlanIDs;
+
+    public User (long ID, String firstName, String lastName, Gender gender, int age, double height, double weight, double activityFactor,String diseaseName,List<Integer> mealPlanIDs) {
         this.ID = ID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -22,6 +26,7 @@ public class User {
         this.weight = weight;
         this.activityFactor = activityFactor;
         this.diseaseName = diseaseName;
+        this.mealPlanIDs = mealPlanIDs;
     }
 
     public User(){
@@ -98,6 +103,14 @@ public class User {
         this.diseaseName = diseaseName;
     }
 
+    public List<Integer> getMealPlanIDs() {
+        return mealPlanIDs;
+    }
+
+    public void setMealPlanIDs(List<Integer> mealPlanIDs) {
+        this.mealPlanIDs = mealPlanIDs;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -110,6 +123,7 @@ public class User {
                 ", weight=" + weight +
                 ", activityFactor=" + activityFactor +
                 ", diseaseName='" + diseaseName + '\'' +
+                ", mealPlanIDs=" + mealPlanIDs +
                 '}';
     }
 }
