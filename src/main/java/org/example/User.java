@@ -14,9 +14,13 @@ public class User {
     private double activityFactor;
     private String diseaseName;
 
+    private double bmi;
+    private double necessaryCalories;
     private List<Integer> mealPlanIDs;
 
-    public User (long ID, String firstName, String lastName, Gender gender, int age, double height, double weight, double activityFactor,String diseaseName,List<Integer> mealPlanIDs) {
+
+    public User (long ID, String firstName, String lastName, Gender gender, int age, double height, double weight, double activityFactor,String diseaseName,
+                 double bmi, double necessaryCalories, List<Integer> mealPlanIDs) {
         this.ID = ID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -26,7 +30,10 @@ public class User {
         this.weight = weight;
         this.activityFactor = activityFactor;
         this.diseaseName = diseaseName;
+        this.bmi = bmi;
+        this.necessaryCalories = necessaryCalories;
         this.mealPlanIDs = mealPlanIDs;
+
     }
 
     public User(){
@@ -103,6 +110,22 @@ public class User {
         this.diseaseName = diseaseName;
     }
 
+    public double getBmi() {
+        return bmi;
+    }
+
+    public void setBmi(double bmi) {
+        this.bmi = bmi;
+    }
+
+    public double getNecessaryCalories() {
+        return necessaryCalories;
+    }
+
+    public void setNecessaryCalories(double necessaryCalories) {
+        this.necessaryCalories = necessaryCalories;
+    }
+
     public List<Integer> getMealPlanIDs() {
         return mealPlanIDs;
     }
@@ -123,6 +146,8 @@ public class User {
                 ", weight=" + weight +
                 ", activityFactor=" + activityFactor +
                 ", diseaseName='" + diseaseName + '\'' +
+                ", bmi=" + bmi +
+                ", necessaryCalories=" + necessaryCalories +
                 ", mealPlanIDs=" + mealPlanIDs +
                 '}';
     }
