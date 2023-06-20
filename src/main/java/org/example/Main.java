@@ -24,7 +24,7 @@ public class Main {
         double BMI = user.getWeight()/ (user.getHeight() * user.getHeight());
         return BMI;
     }
-    public static double caloriesNeeded (User user){
+    public static void caloriesNeeded (User user){
         double BMR = 0;
         if(user.getGender().equals(Gender.M)) {
             BMR = 88.362 + (13.397 * user.getWeight()) + (4.799 * user.getHeight() * 100) - (5.677 * user.getAge());
@@ -32,7 +32,8 @@ public class Main {
         else{
             BMR = 447.593 + (9.247 * user.getWeight()) + (3.098 * user.getHeight() * 100) - (4.330 * user.getAge());
         }
-        return BMR * user.getActivityFactor();
+        double bmr = user.getNecessaryCalories();
+        System.out.println(bmr);
     }
 
     public static void diseaseSelection(User user){
@@ -130,6 +131,13 @@ public class Main {
         user.setActivityFactor(activity);
 
         diseaseSelection(user);
+
+        System.out.println("BMI:");
+        double BMI = calculateBMI(user);
+        System.out.println(user.getBmi());
+
+        caloriesNeeded(user);
+
 
         System.out.println("Enter Meal Plan IDs:");
         List<Integer> mealPlanIDs = new ArrayList<>();
