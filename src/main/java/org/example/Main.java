@@ -1,6 +1,8 @@
 package org.example;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -149,4 +151,17 @@ public class Main {
         insertData(connection, "user", user);
     }
 
+    public static void searchbyDiabetes (Connection connection, User user) throws SQLException {
+        List<Integer> list = new ArrayList<>();
+        String selectquerys = "SELECT id FROM mealPlan WHERE type = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(selectquerys);
+        preparedStatement.setString(1, "Diabetes");
+        ResultSet rs = preparedStatement.executeQuery();
+        while (rs.next()){
+            int id = rs.getInt("id");
+            list.add(id);
+
+        }
+        user.setMealPlanIDs(list);
+    }
 }
