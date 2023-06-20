@@ -32,8 +32,8 @@ public class Main {
         else{
             BMR = 447.593 + (9.247 * user.getWeight()) + (3.098 * user.getHeight() * 100) - (4.330 * user.getAge());
         }
-        double bmr = user.getNecessaryCalories();
-        System.out.println(bmr);
+        user.setNecessaryCalories(BMR);
+        System.out.println(user.getNecessaryCalories());
     }
 
     public static void diseaseSelection(User user){
@@ -134,6 +134,7 @@ public class Main {
 
         System.out.println("BMI:");
         double BMI = calculateBMI(user);
+        user.setBmi(BMI);
         System.out.println(user.getBmi());
 
         caloriesNeeded(user);

@@ -45,10 +45,15 @@ public class ConnectDataBase {
             System.out.println("Gender: " + rs.getString("gender"));
             System.out.println("Age: " + rs.getInt("age"));
             System.out.println("Activity factor: " + rs.getDouble("activityFactor"));
+            System.out.println("Disease name: " + rs.getString("diseaseName"));
+            System.out.println("BMI: " + rs.getDouble("bmi"));
+            System.out.println("Necessary number of calories: " + rs.getDouble("necessaryCalories"));
+            System.out.println("Meal plan ids: " + rs.getDouble("mealPlanIDs"));
         }
     }
     public static void insertData(Connection connection, String tableName, User user) throws SQLException{
-        String insertSQL = "INSERT INTO " + tableName + "(id,firstName,lastName,height,weight,gender,age,activityFactor,diseaseName,mealPlanIDs) " + "VALUES(?,?,?,?,?,?,?,?,?,?)";
+        String insertSQL = "INSERT INTO " + tableName + "(id,firstName,lastName,height,weight,gender,age,activityFactor,diseaseName,bmi,necessaryCalories,mealPlanIDs) "
+                + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
         preparedStatement.setLong(1, user.getID());
         preparedStatement.setString(2, user.getFirstName());
@@ -59,6 +64,8 @@ public class ConnectDataBase {
         preparedStatement.setInt(7, user.getAge());
         preparedStatement.setDouble(8, user.getActivityFactor());
         preparedStatement.setString(9, user.getDiseaseName());
+        preparedStatement.setDouble(10, user.getBmi());
+        preparedStatement.setDouble(11, user.getNecessaryCalories());
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < user.getMealPlanIDs().size(); i++) {
             sb.append(user.getMealPlanIDs().get(i));
@@ -69,7 +76,7 @@ public class ConnectDataBase {
         String concatenatedValues = sb.toString();
 
         // Setează șirul de caractere în câmpul corespunzător
-        preparedStatement.setString(10, concatenatedValues);
+        preparedStatement.setString(12, concatenatedValues);
 
 
         preparedStatement.executeUpdate();
