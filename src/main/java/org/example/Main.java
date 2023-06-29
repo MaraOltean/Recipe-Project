@@ -35,7 +35,7 @@ public class Main {
         } else {
             BMR = 447.593 + (9.247 * user.getWeight()) + (3.098 * user.getHeight() * 100) - (4.330 * user.getAge());
         }
-        user.setNecessaryCalories(BMR);
+        user.setNecessaryCalories(BMR* user.getActivityFactor());
         System.out.println(user.getNecessaryCalories());
     }
 
@@ -177,7 +177,7 @@ public class Main {
         //Ia numarul de kcal al userului
          double userkcal = user.getNecessaryCalories();
         //verifica in baza de date planurile alimentare care un total de kcal > sau < cu 100 decat necesarul caloric al utilizatorului
-        String selectquery = "SELECT totalKcal FROM mealPlan where totalKcal BETWEEN ? AND ?";
+        String selectquery = "SELECT id,totalKcal FROM mealPlan where totalKcal BETWEEN ? AND ?";
         PreparedStatement preparedStatement = connection.prepareStatement(selectquery);
         preparedStatement.setDouble(1, userkcal-100);
         preparedStatement.setDouble(2, userkcal+100);
