@@ -13,37 +13,38 @@ import static org.example.ConnectDataBase.*;
 public class Main {
     public static void main(String[] args) throws SQLException {
 
-       // System.out.println(calculateBMI(new User(1, "Mara", "Oltean", Gender.M, 24, 1.64, 53, 1.5, "Diabet")) );
-       // System.out.println(caloriesNeeded(new User(1, "Mara", "Oltean", Gender.M, 24, 1.64, 53, 1.5, "Diabet")));
+        // System.out.println(calculateBMI(new User(1, "Mara", "Oltean", Gender.M, 24, 1.64, 53, 1.5, "Diabet")) );
+        // System.out.println(caloriesNeeded(new User(1, "Mara", "Oltean", Gender.M, 24, 1.64, 53, 1.5, "Diabet")));
 
         connect();
-      //  User user = new User(2, "Ana" , "Pop", Gender.F, 24, 1.60, 50, 1.5, null);
-     //   diseaseSelection(user);
-      //  System.out.println(user.toString());
+        //  User user = new User(2, "Ana" , "Pop", Gender.F, 24, 1.60, 50, 1.5, null);
+        //   diseaseSelection(user);
+        //  System.out.println(user.toString());
 
     }
-    public static double calculateBMI(User user){
-        double BMI = user.getWeight()/ (user.getHeight() * user.getHeight());
+
+    public static double calculateBMI(User user) {
+        double BMI = user.getWeight() / (user.getHeight() * user.getHeight());
         return BMI;
     }
-    public static void caloriesNeeded (User user){
+
+    public static void caloriesNeeded(User user) {
         double BMR = 0;
-        if(user.getGender().equals(Gender.M)) {
+        if (user.getGender().equals(Gender.M)) {
             BMR = 88.362 + (13.397 * user.getWeight()) + (4.799 * user.getHeight() * 100) - (5.677 * user.getAge());
-        }
-        else{
+        } else {
             BMR = 447.593 + (9.247 * user.getWeight()) + (3.098 * user.getHeight() * 100) - (4.330 * user.getAge());
         }
         user.setNecessaryCalories(BMR);
         System.out.println(user.getNecessaryCalories());
     }
 
-    public static void diseaseSelection(User user){
+    public static void diseaseSelection(User user) {
         System.out.println("Choose a disease: ");
         System.out.println("1.Diabetes; 2.Hypothyroidism; 3.Hyperthyroidism; 4.Atherosclerosis; 5.Hypertension");
         Scanner scanner = new Scanner(System.in);
         int diseaseNumber = scanner.nextInt();
-        switch (diseaseNumber){
+        switch (diseaseNumber) {
             case 1:
                 user.setDiseaseName("Diabetes");
                 break;
@@ -63,6 +64,7 @@ public class Main {
                 System.out.println("Healthy User");
         }
     }
+
     public static void menu(Connection conn) throws SQLException {
         System.out.println("1.Adaugati un nou utilizator -> intrebari despre utilizator -> recomandare plan alimentar\n" +
                 "2.Stergeti un utilizator din baza de date\n" +
@@ -84,14 +86,15 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         int selectionNumber = scanner.nextInt();
 
-        switch(selectionNumber){
+        switch (selectionNumber) {
             case 1:
                 userMenu(conn);
-           // case 2: deleteData(conn, "user", 2);
-           // case 3: displayDatabase(conn, "user");
+                // case 2: deleteData(conn, "user", 2);
+                // case 3: displayDatabase(conn, "user");
         }
 
     }
+
     public static void userMenu(Connection connection) throws SQLException {
         User user = new User();
         Scanner scanner = new Scanner(System.in);
@@ -119,9 +122,9 @@ public class Main {
 
         System.out.println("Select Gender (M/F):");
         int gender = scanner.nextInt();
-        if(gender == 1) {
+        if (gender == 1) {
             user.setGender(Gender.M);
-        } else{
+        } else {
             user.setGender(Gender.F);
         }
         System.out.println("Enter Age:");
@@ -142,26 +145,50 @@ public class Main {
         caloriesNeeded(user);
 
 
-        System.out.println("Enter Meal Plan IDs:");
-        List<Integer> mealPlanIDs = new ArrayList<>();
-        int numberIDs = scanner.nextInt();
-        mealPlanIDs.add(numberIDs);
-        user.setMealPlanIDs(mealPlanIDs);
+//        System.out.println("Enter Meal Plan IDs:");
+//        List<Integer> mealPlanIDs = new ArrayList<>();
+//        int numberIDs = scanner.nextInt();
+//        mealPlanIDs.add(numberIDs);
+       // user.setMealPlanIDs(mealPlanIDs);
+
+        searchByDisease(connection, user);
+        if(user.getDiseaseName() == null){
+            recommendMealPlan(connection,user);
+        }
 
         insertData(connection, "user", user);
     }
 
-    public static void searchbyDiabetes (Connection connection, User user) throws SQLException {
+    public static void searchByDisease(Connection connection, User user) throws SQLException {
         List<Integer> list = new ArrayList<>();
         String selectquerys = "SELECT id FROM mealPlan WHERE type = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(selectquerys);
-        preparedStatement.setString(1, "Diabetes");
+        preparedStatement.setString(1, user.getDiseaseName());
         ResultSet rs = preparedStatement.executeQuery();
-        while (rs.next()){
+        while (rs.next()) {
             int id = rs.getInt("id");
             list.add(id);
 
         }
+        user.setMealPlanIDs(list);
+    }
+
+    public static void recommendMealPlan(Connection connection, User user) throws SQLException{
+        //Ia numarul de kcal al userului
+         double userkcal = user.getNecessaryCalories();
+        //verifica in baza de date planurile alimentare care un total de kcal > sau < cu 100 decat necesarul caloric al utilizatorului
+        String selectquery = "SELECT totalKcal FROM mealPlan where totalKcal BETWEEN ? AND ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(selectquery);
+        preparedStatement.setDouble(1, userkcal-100);
+        preparedStatement.setDouble(2, userkcal+100);
+        ResultSet rs = preparedStatement.executeQuery();
+        List<Integer> list = new ArrayList<>();
+        while (rs.next()){
+            int id = rs.getInt("id");
+            list.add(id);
+        }
+
+        //in cazul in care exista planuri alimentare care indeplinesc conditia de mai sus sa se asigneze id-urile planului alimentar pe coloane mealPlanID din tabela user
         user.setMealPlanIDs(list);
     }
 }
