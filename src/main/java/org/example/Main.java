@@ -12,15 +12,7 @@ import static org.example.ConnectDataBase.*;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
-
-        // System.out.println(calculateBMI(new User(1, "Mara", "Oltean", Gender.M, 24, 1.64, 53, 1.5, "Diabet")) );
-        // System.out.println(caloriesNeeded(new User(1, "Mara", "Oltean", Gender.M, 24, 1.64, 53, 1.5, "Diabet")));
-
         connect();
-        //  User user = new User(2, "Ana" , "Pop", Gender.F, 24, 1.60, 50, 1.5, null);
-        //   diseaseSelection(user);
-        //  System.out.println(user.toString());
-
     }
 
     public static double calculateBMI(User user) {
@@ -112,7 +104,7 @@ public class Main {
         String lastName = scanner.nextLine();
         user.setLastName(lastName);
 
-        System.out.println("Enter Height:");
+        System.out.println("Enter Height (in meters, format 1.7):");
         double height = scanner.nextDouble();
         user.setHeight(height);
 
@@ -120,20 +112,40 @@ public class Main {
         double weight = scanner.nextDouble();
         user.setWeight(weight);
 
-        System.out.println("Select Gender (M/F):");
+        System.out.println("Select Gender (1 for Male / 2 for Female):");
         int gender = scanner.nextInt();
         if (gender == 1) {
             user.setGender(Gender.M);
+        } else if (gender == 2) {
+            user.setGender(Gender.F);
         } else {
+            System.out.println("Invalid input. Assuming gender as Female.");
             user.setGender(Gender.F);
         }
+
         System.out.println("Enter Age:");
         int age = scanner.nextInt();
         user.setAge(age);
 
-        System.out.println("Enter Activity Factor: 1.3 - Sedentar; 1.5 - Moderat; 1.8 - Activ");
-        double activity = scanner.nextDouble();
-        user.setActivityFactor(activity);
+        System.out.println("Select Activity Factor: (1 - Sedentary; 2 - Moderate; 3 - Active)");
+        int activitySelection = scanner.nextInt();
+        double activityFactor;
+        switch (activitySelection) {
+            case 1:
+                activityFactor = 1.3;
+                break;
+            case 2:
+                activityFactor = 1.5;
+                break;
+            case 3:
+                activityFactor = 1.8;
+                break;
+            default:
+                System.out.println("Invalid input. Assuming activity factor as 1.3 (Sedentary).");
+                activityFactor = 1.3;
+                break;
+        }
+        user.setActivityFactor(activityFactor);
 
         diseaseSelection(user);
 
@@ -144,12 +156,6 @@ public class Main {
 
         caloriesNeeded(user);
 
-
-//        System.out.println("Enter Meal Plan IDs:");
-//        List<Integer> mealPlanIDs = new ArrayList<>();
-//        int numberIDs = scanner.nextInt();
-//        mealPlanIDs.add(numberIDs);
-       // user.setMealPlanIDs(mealPlanIDs);
 
         searchByDisease(connection, user);
         if(user.getDiseaseName() == null){
@@ -174,9 +180,7 @@ public class Main {
     }
 
     public static void recommendMealPlan(Connection connection, User user) throws SQLException{
-        //Ia numarul de kcal al userului
          double userkcal = user.getNecessaryCalories();
-        //verifica in baza de date planurile alimentare care un total de kcal > sau < cu 100 decat necesarul caloric al utilizatorului
         String selectquery = "SELECT id,totalKcal FROM mealPlan where totalKcal BETWEEN ? AND ?";
         PreparedStatement preparedStatement = connection.prepareStatement(selectquery);
         preparedStatement.setDouble(1, userkcal-100);
@@ -187,8 +191,6 @@ public class Main {
             int id = rs.getInt("id");
             list.add(id);
         }
-
-        //in cazul in care exista planuri alimentare care indeplinesc conditia de mai sus sa se asigneze id-urile planului alimentar pe coloane mealPlanID din tabela user
         user.setMealPlanIDs(list);
     }
 }
