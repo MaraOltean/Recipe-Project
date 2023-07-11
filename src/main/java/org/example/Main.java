@@ -81,8 +81,16 @@ public class Main {
         switch (selectionNumber) {
             case 1:
                 userMenu(conn);
-                // case 2: deleteData(conn, "user", 2);
-                // case 3: displayDatabase(conn, "user");
+                case 2:
+                 System.out.println("Enter the ID of the user you want to delete:");
+                 int userID = scanner.nextInt();
+                 deleteData(conn, "user", userID);
+                 break;
+                 case 3: displayDatabase(conn, "user");
+                 break;
+            default:
+                System.out.println("Invalid option. Please select another option.");
+                break;
         }
 
     }

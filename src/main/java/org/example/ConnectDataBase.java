@@ -19,7 +19,6 @@ public class ConnectDataBase {
             System.out.println(e.getMessage());
         }
         displayDatabase(connection, "user");
-       // insertData(connection, "user", (new User(5, "Mara", "Oltean", Gender.F, 24, 1.64, 53, 1.5)) );
         deleteData(connection, "user", 2 );
         System.out.println("After delete");
         displayDatabase(connection, "user");
@@ -75,7 +74,6 @@ public class ConnectDataBase {
         }
         String concatenatedValues = sb.toString();
 
-        // Setează șirul de caractere în câmpul corespunzător
         preparedStatement.setString(12, concatenatedValues);
 
 
@@ -89,7 +87,7 @@ public class ConnectDataBase {
 
         int rowsAffected = preparedStatement.executeUpdate();
         if(rowsAffected>0){
-            System.out.println("User with id = " + ID + " deleted with successfully");
+            System.out.println("User with ID = " + ID + " deleted with successfully");
         }else{
             System.out.println("The user has not been deleted");
         }
