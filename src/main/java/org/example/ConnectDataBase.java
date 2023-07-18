@@ -141,6 +141,17 @@ public class ConnectDataBase {
         rs.close();
         stmt.close();
     }
+    public static void displayUsersWithDiseasePlan(Connection conn) throws SQLException {
+        String selectSQL = "SELECT * FROM user WHERE diseaseName IS NOT NULL AND mealPlanIDs IS NOT NULL";
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(selectSQL);
+        System.out.println("Users with Disease and Meal Plan");
+        while (rs.next()) {
+            displayUserInfo(rs);
+        }
+        rs.close();
+        stmt.close();
+    }
 
     private static void displayUserInfo(ResultSet rs) throws SQLException {
         System.out.println("Id: " + rs.getLong("id"));

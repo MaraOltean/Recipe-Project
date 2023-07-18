@@ -100,6 +100,9 @@ public class Main {
             case 8:
                 displayUsersWithDisease(conn);
                 break;
+            case 9:
+                displayUsersWithDiseasePlan(conn);
+                break;
             default:
                 System.out.println("Invalid option. Please select another option.");
                 break;
