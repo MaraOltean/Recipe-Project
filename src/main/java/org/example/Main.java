@@ -81,13 +81,22 @@ public class Main {
         switch (selectionNumber) {
             case 1:
                 userMenu(conn);
-                case 2:
-                 System.out.println("Enter the ID of the user you want to delete:");
-                 int userID = scanner.nextInt();
-                 deleteData(conn, "user", userID);
-                 break;
-                 case 3: displayDatabase(conn, "user");
-                 break;
+            case 2:
+                System.out.println("Enter the ID of the user you want to delete:");
+                int userID = scanner.nextInt();
+                deleteData(conn, "user", userID);
+                break;
+            case 3 : displayDatabase(conn, "user");
+                break;
+            case 5:
+                displayUsersWithLessCalories(conn, "<", 2000);
+                break;
+            case 6:
+                displayUsersWithCaloriesRange(conn, "BETWEEN", 2000, 3000);
+                break;
+            case 7:
+                displayUsersWithMoreCalories(conn, ">", 3000);
+                break;
             default:
                 System.out.println("Invalid option. Please select another option.");
                 break;
@@ -112,7 +121,7 @@ public class Main {
         String lastName = scanner.nextLine();
         user.setLastName(lastName);
 
-        System.out.println("Enter Height (in meters, format 1.7):");
+        System.out.println("Enter Height (in meters, for example - format 1.7):");
         double height = scanner.nextDouble();
         user.setHeight(height);
 

@@ -93,4 +93,56 @@ public class ConnectDataBase {
         }
 
     }
-}
+
+    public static void displayUsersWithLessCalories(Connection conn, String operator, double calories) throws SQLException {
+        String selectSQL = "SELECT * FROM user WHERE necessaryCalories " + operator + " " + calories;
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(selectSQL);
+        System.out.println("Users with Calories " + operator + " " + calories);
+        while (rs.next()) {
+            displayUserInfo(rs);
+        }
+        rs.close();
+        stmt.close();
+    }
+
+    public static void displayUsersWithCaloriesRange(Connection conn, String operator, double lowerCalories, double upperCalories) throws SQLException {
+        String selectSQL = "SELECT * FROM user WHERE necessaryCalories " + operator + " " + lowerCalories + " AND " + upperCalories;
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(selectSQL);
+        System.out.println("Users with Calories " + operator + " " + lowerCalories + " and " + upperCalories);
+        while (rs.next()) {
+            displayUserInfo(rs);
+        }
+        rs.close();
+        stmt.close();
+    }
+
+    public static void displayUsersWithMoreCalories(Connection conn, String operator, double calories) throws SQLException {
+        String selectSQL = "SELECT * FROM user WHERE necessaryCalories " + operator + " " + calories;
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(selectSQL);
+        System.out.println("Users with Calories " + operator + " " + calories);
+        while (rs.next()) {
+            displayUserInfo(rs);
+        }
+        rs.close();
+        stmt.close();
+    }
+
+    private static void displayUserInfo(ResultSet rs) throws SQLException {
+        System.out.println("Id: " + rs.getLong("id"));
+        System.out.println("First name: " + rs.getString("firstName"));
+        System.out.println("Last name: " + rs.getString("lastName"));
+        System.out.println("Height: " + rs.getDouble("height"));
+        System.out.println("Weight: " + rs.getDouble("weight"));
+        System.out.println("Gender: " + rs.getString("gender"));
+        System.out.println("Age: " + rs.getInt("age"));
+        System.out.println("Activity factor: " + rs.getDouble("activityFactor"));
+        System.out.println("Disease name: " + rs.getString("diseaseName"));
+        System.out.println("BMI: " + rs.getDouble("bmi"));
+        System.out.println("Necessary number of calories: " + rs.getDouble("necessaryCalories"));
+        System.out.println("Meal plan ids: " + rs.getDouble("mealPlanIDs"));
+    }
+
+    }
