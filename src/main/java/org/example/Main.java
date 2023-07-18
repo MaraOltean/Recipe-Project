@@ -97,6 +97,9 @@ public class Main {
             case 7:
                 displayUsersWithMoreCalories(conn, ">", 3000);
                 break;
+            case 8:
+                displayUsersWithDisease(conn);
+                break;
             default:
                 System.out.println("Invalid option. Please select another option.");
                 break;

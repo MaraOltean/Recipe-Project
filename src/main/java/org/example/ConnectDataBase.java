@@ -130,6 +130,18 @@ public class ConnectDataBase {
         stmt.close();
     }
 
+    public static void displayUsersWithDisease(Connection conn) throws SQLException {
+        String selectSQL = "SELECT * FROM user WHERE diseaseName IS NOT NULL";
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(selectSQL);
+        System.out.println("Users with Disease");
+        while (rs.next()) {
+            displayUserInfo(rs);
+        }
+        rs.close();
+        stmt.close();
+    }
+
     private static void displayUserInfo(ResultSet rs) throws SQLException {
         System.out.println("Id: " + rs.getLong("id"));
         System.out.println("First name: " + rs.getString("firstName"));
